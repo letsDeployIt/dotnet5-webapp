@@ -29,5 +29,12 @@ namespace dotnet5_webapp.Controllers
             }
             return Ok(contact);
         }
+        
+        [HttpPost]
+        public ActionResult<IEnumerable<Contact>> Get(Contact contact)
+        {
+            _contacts.Add(contact);
+            return _contacts;
+        }
     }
 }
