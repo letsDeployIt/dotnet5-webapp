@@ -37,26 +37,19 @@ namespace dotnet5_webapp.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutContact(int id, Contact contact)
         {
-            if (id != contact.Id)
+            var dbContact = await _context.Contacts.FindAsync(id);
+            if (dbContact == null)
             {
-                return BadRequest();
+                return NotFound();  
             }
 
-            _context.Entry(contact).State = EntityState.Modified;
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ContactExists(id))
-                {
-                    return NotFound();
-                }
-                throw;
-            }
+            dbContact.FirstName = contact.FirstName;
+            dbContact.LastName = contact.LastName;
+            dbContact.NickName = contact.NickName;
+            dbContact.Place = contact.Place;
 
-            return NoContent();
+            await _context.SaveChangesAsync();
+            return Ok(dbContact);
         }
 
         [HttpPost]
@@ -65,7 +58,7 @@ namespace dotnet5_webapp.Controllers
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetContact", new { id = contact.Id }, contact);
+            return Ok(_context.Contacts);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContact(int id)
@@ -78,7 +71,7 @@ namespace dotnet5_webapp.Controllers
 
             _context.Contacts.Remove(contact);
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok(_context.Contacts);
         }
 
         private bool ContactExists(int id)  
