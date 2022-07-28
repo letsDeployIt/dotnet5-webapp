@@ -50,5 +50,18 @@ namespace dotnet5_webapp.Controllers
             contact.IsDeleted = updatedContact.IsDeleted;
             return Ok(_contacts);
         }
+        
+        [HttpDelete("{id}")]
+        public ActionResult<IEnumerable<Contact>> Delete(int id)
+        {
+            Contact contact = _contacts.FirstOrDefault(c => c.Id == id);
+            if (contact == null)
+            {
+                return NotFound(new { Message = "Contact has not been found." });
+            }
+
+            _contacts.Remove(contact);
+            return Ok(_contacts);
+        }
     }
 }
