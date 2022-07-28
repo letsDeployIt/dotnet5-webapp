@@ -31,10 +31,24 @@ namespace dotnet5_webapp.Controllers
         }
         
         [HttpPost]
-        public ActionResult<IEnumerable<Contact>> Get(Contact contact)
+        public ActionResult<IEnumerable<Contact>> Post(Contact contact)
         {
             _contacts.Add(contact);
             return _contacts;
+        }
+        
+        [HttpPut("{id}")]
+        public ActionResult<IEnumerable<Contact>> Put(int id, Contact updatedContact)
+        {
+            Contact contact = _contacts.FirstOrDefault(c => c.Id == id);
+            if (contact == null)
+            {
+                return NotFound(new { Message = "Contact has not been found." });
+            }
+
+            contact.NickName = updatedContact.NickName;
+            contact.IsDeleted = updatedContact.IsDeleted;
+            return Ok(_contacts);
         }
     }
 }

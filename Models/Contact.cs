@@ -10,6 +10,6 @@ namespace dotnet5_webapp.Models
         public string NickName { get; set; }
         public string Place { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
-        public bool IsCreated { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
