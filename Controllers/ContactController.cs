@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using dotnet5_webapp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,11 @@ namespace dotnet5_webapp.Controllers
         public IEnumerable<Contact> Get()
         {
             return _contacts;
+        }
+        [HttpGet("{id}")]
+        public Contact Get(int id)
+        {
+            return _contacts.FirstOrDefault(c => c.Id == id);
         }
     }
 }
