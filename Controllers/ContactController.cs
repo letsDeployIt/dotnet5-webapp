@@ -15,14 +15,19 @@ namespace dotnet5_webapp.Controllers
             new Contact {Id = 2, FirstName = "Dal0", LastName = "Ci0", NickName = "Cut0", Place = "NY0"},
         };
         [HttpGet]
-        public IEnumerable<Contact> Get()
+        public ActionResult<IEnumerable<Contact>> Get()
         {
             return _contacts;
         }
         [HttpGet("{id}")]
-        public Contact Get(int id)
+        public ActionResult<Contact> Get(int id)
         {
-            return _contacts.FirstOrDefault(c => c.Id == id);
+            Contact contact = _contacts.FirstOrDefault(c => c.Id == id);
+            if (contact == null)
+            {
+                return NotFound(new { Message = "Contact has not been found." });
+            }
+            return Ok(contact);
         }
     }
 }
