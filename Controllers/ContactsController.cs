@@ -22,7 +22,7 @@ namespace dotnet5_webapp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacts()
         {
-            return await _context.Contacts.ToListAsync();
+            return await _context.Contacts.Where(c=> c.IsDeleted == false).ToListAsync();
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<Contact>> GetContact(int id)
@@ -69,7 +69,7 @@ namespace dotnet5_webapp.Controllers
                 return NotFound();
             }
 
-            _context.Contacts.Remove(contact);
+            contact.IsDeleted = true;
             await _context.SaveChangesAsync();
             return Ok(_context.Contacts);
         }
